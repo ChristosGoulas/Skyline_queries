@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skyline-queries"
+version = "0.1.0"
+description = "Skyline (Pareto frontier) queries over NBA statistics, with BNL, SFS and Divide & Conquer algorithms"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Christos Goulas" }]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "hypothesis>=6.0", "ruff", "mypy"]
+viz = ["matplotlib>=3.7"]
+
+[project.scripts]
+skyline = "skyline.cli:main"
+
+[tool.setuptools]
+packages = ["skyline"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# Scripts add the repo root to sys.path before importing the package.
+"benchmarks/*.py" = ["E402"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["skyline", "benchmarks"]
+mypy_path = "."
+
+[[tool.mypy.overrides]]
+module = "matplotlib.*"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
